@@ -7,3 +7,8 @@ display: flex;
 .row img{
     width: 200px;
 }
+.list {
+    text-align : left;
+    padding-left : 20px;
+    border-bottom : 1px solid grey;
+  }
