@@ -1,7 +1,10 @@
-import { Routes,Route,Link } from 'react-router-dom';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 
 function Detail(){
+  let [modal, setModal] = useState(true);
+
     return ( 
         <div className="container">
         <div className="row">
@@ -12,10 +15,19 @@ function Detail(){
             <h4 className="pt-5">상품명</h4>
             <p>상품설명</p>
             <p>120000원</p>
-            <Link to="/about"><button className="btn btn-danger">주문하기</button> </Link>
+            <Link to="/cart"><button className="btn btn-danger">주문하기</button> </Link>
           </div>
         </div>
-     
+        <div>
+      {
+        modal==true?<div>이번주까지 50% 할인</div>:null
+      }
+      </div>
+      <div>
+      <button onClick={()=>{
+          setModal(!modal)
+      }}>X</button>
+      </div>
       </div> 
 
       
