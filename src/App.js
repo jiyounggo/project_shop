@@ -34,8 +34,9 @@ function App() {
 
 <Routes>
       <Route path="/" element={
-      <div>
-   <Link to="/detail0"><Card shoes={shoes[0]} i={1}/></Link>
+    <div>
+   <Link to="/detail0">
+    <Card shoes={shoes[0]} i={1}/></Link>
     <Card shoes={shoes[1]} i={2}/>
     <Card shoes={shoes[2]} i={3}/>
     </div>
@@ -56,11 +57,20 @@ function App() {
 
 function Card(props){
   return(
-    <div>
-   <img src={'https://codingapple1.github.io/shop/shoes'+ props.i+'.jpg'}></img>
-  <h4>{props.shoes.title}</h4>
-  <p>{props.shoes.price}</p>
+  
+<div className="container">
+  <div className="row">
+    <div className="col-md-4"> 
+    <img src={'https://codingapple1.github.io/shop/shoes'+ props.i+'.jpg'}></img>
+    <h4>{props.shoes.title}</h4>
+    <p>{props.shoes.price}</p>
     </div>
+    
+   
+  </div>
+</div> 
+
+
   )
 }
 

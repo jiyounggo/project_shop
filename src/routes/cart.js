@@ -90,7 +90,7 @@ function Cart(){
       <td>Mark</td>
       <td>Otto</td>
       <td><input type="checkbox"></input></td>
-      <td><button>X</button></td>
+      <td>히히</td>
     </tr>
     
 
