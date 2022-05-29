@@ -75,7 +75,7 @@ function Detail(){
 
   function Tabcontent(props){
     let [입력값,입력값변경]=useState("");
-    let [글제목,글제목변경]=useState([]);
+    let [글제목,글제목변경]=useState(["안녕","반가","나난"]);
 
     if(props.탭==0){
       return <div>내용0</div>
@@ -84,7 +84,6 @@ function Detail(){
     }if(props.탭==2){
       return <div> 
        <form onSubmit={(e)=>{
-        
          e.preventDefault();
          if(입력값===""){
           alert("글자를 입력하세요")
@@ -115,11 +114,8 @@ function Detail(){
          
           </div> 
           )
-        }) 
-      
+        })      
 }
-
-
       </div>
     }if(props.탭==3){
       return <div>내용3</div>
