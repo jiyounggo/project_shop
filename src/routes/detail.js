@@ -74,8 +74,8 @@ function Detail(){
   }
 
   function Tabcontent(props){
-    let [입력값,입력값변경]=useState('');
-    let [글제목,글제목변경]=useState(['상품 너무 좋네요 호호','맛집이네~','존맛탱']);
+    let [입력값,입력값변경]=useState("");
+    let [글제목,글제목변경]=useState([]);
 
     if(props.탭==0){
       return <div>내용0</div>
@@ -84,14 +84,22 @@ function Detail(){
     }if(props.탭==2){
       return <div> 
        <form onSubmit={(e)=>{
+        
          e.preventDefault();
+         if(입력값===""){
+          alert("글자를 입력하세요")
+         return
+         }else{
+        글제목변경([입력값,...글제목])
+        입력값변경("");
+         }
          
        }}>
-      <input onChange={(e)=>{입력값변경(e.target.value)}}></input>
+      <input onChange={(e)=>{입력값변경(e.target.value)}} value={입력값}></input>
       <button onClick={()=>{
-        let copy = [...글제목];
-        copy.unshift(입력값+'X');
-        글제목변경(copy);
+        // let copy = [...글제목];
+        // copy.unshift(입력값);
+        // 글제목변경(copy);
       }}>댓글</button>
        </form>
   {  
