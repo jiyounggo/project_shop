@@ -12,7 +12,8 @@ function App() {
   let [shoes] = useState(data)
   let[버튼,버튼변경]=useState(0);
   let [ pat,par]=useState(data);
-  let [새로,새로저장]=useState(data);
+  let [please,zez]=useState([]);
+ 
   return (
     <div>
     <Navbar bg="light" expand="lg">
@@ -41,11 +42,19 @@ function App() {
      pat.map((a,i)=>{
        return <Card pat={pat[i]} i={i+1}></Card>
      })
+     
    } 
+     { 
+     please.map((a,i)=>{
+       return <Card2 please={please[i]} i={i+7}></Card2>
+     })
+     
+   } 
+ 
     <button onClick={()=>{
       버튼변경(버튼+1)
     }}>더보기</button>
-     <Clicks 버튼={버튼} shoes={shoes} par={par} ></Clicks>
+     <Clicks 버튼={버튼} shoes={shoes} par={par} zez={zez}></Clicks>
    </div> 
     }/>
       <Route path="/detail0" element={<Detail/> } />
@@ -62,14 +71,15 @@ function Clicks(props){
     let copy=[...props.shoes, ...결과.data];
     props.par(copy);
   }) 
-  
+
 }if(props.버튼==2){
   axios.get('https://codingapple1.github.io/shop/data3.json')
 .then((결과)=>{
-  let copy=[...props.shoes,...결과.data,...결과.data];
-  props.par(copy);
+  let copy=[...결과.data];
+  props.zez(copy);
+  
 }) 
-}
+ }
 if(props.버튼==3){
  return "상품이 더 없습니다"
   }
@@ -77,9 +87,18 @@ if(props.버튼==3){
 function Card(props){
   return(
     <div className="plus">
-    <Link to ="/detail/1"><img src={process.env.PUBLIC_URL+'img/clothes'+props.i+'.png'}></img></Link>
-    <Link to ="/detail/1"><h4>{props.pat.title}</h4></Link>
-    <Link to ="/detail/1"><p>{props.pat.price}</p></Link>
+    <img src={process.env.PUBLIC_URL+'img/clothes'+props.i+'.png'}></img>
+  <h4>{props.pat.title}</h4>
+  <p>{props.pat.content}</p>
+    </div>
+  )
+}
+function Card2(props){
+  return(
+    <div className="plus">
+    <img src={process.env.PUBLIC_URL+'img/clothes'+props.i+'.png'}></img>
+  <h4>{props.please.title}</h4>
+  <p>{props.please.content}</p>
     </div>
   )
 }
