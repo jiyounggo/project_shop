@@ -40,7 +40,7 @@ function App() {
     <div>
     { 
      pat.map((a,i)=>{
-       return <Card pat={pat[i]} i={i+1}></Card>
+       return   <Link to={`/detail/${a.id}`}><Card pat={pat[i]} i={i+1}></Card></Link>
      })
      
    } 
@@ -57,7 +57,7 @@ function App() {
      <Clicks 버튼={버튼} shoes={shoes} par={par} zez={zez}></Clicks>
    </div> 
     }/>
-      <Route path="/detail0" element={<Detail/> } />
+      <Route path="/detail/:id" element={<Detail shoes={shoes}/> } />
       <Route path="/cart" element={ <Cart/> } />
     </Routes>
     </div>

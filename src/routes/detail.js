@@ -1,8 +1,10 @@
 import { useState ,useEffect} from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import {Nav,Card,ListGroup} from 'react-bootstrap'
 
-function Detail(){
+function Detail(props){
+  let {id} = useParams();
+  console.log(id);
   let [modal, setModal] = useState(true);
   let [탭 , 탭변경]=useState(0);
   let [alert, setAlert] = useState(true);
@@ -10,9 +12,7 @@ function Detail(){
   useEffect(()=>{
     setTimeout(()=>{ setAlert(false) }, 2000)
   }, [])
-
-    return ( 
-     
+    return (  
         <div className="container">
            {
         alert == true
@@ -26,9 +26,9 @@ function Detail(){
             <img src="https://codingapple1.github.io/shop/shoes1.jpg" width="100%" />
           </div>
           <div className="col-md-6">
-            <h4 className="pt-5">상품명</h4>
-            <p>상품설명</p>
-            <p>120000원</p>
+            <h4 className="pt-5">{props.shoes[id].title}</h4>
+            <p>{props.shoes[id].title}</p>
+            <p>{props.shoes[id].title}</p>
             <Link to="/cart"><button className="btn btn-danger">주문하기</button> </Link>
           </div>
         </div>
@@ -66,13 +66,9 @@ function Detail(){
     </Nav.Item>
 </Nav>
 <Tabcontent 탭={탭}/>
-
       </div> 
-
-
     )
   }
-
   function Tabcontent(props){
     let [입력값,입력값변경]=useState("");
     let [글제목,글제목변경]=useState(["안녕","반가","나난"]);
