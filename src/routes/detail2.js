@@ -8,7 +8,6 @@ import {Nav,Card,ListGroup} from 'react-bootstrap'
 
 function Detail(props){
   let {id} = useParams();
-  console.log(id);
   let [modal, setModal] = useState(true);
   let [탭 , 탭변경]=useState(0);
   let [alert, setAlert] = useState(true);
@@ -29,12 +28,12 @@ function Detail(props){
   
         <div className="row">
           <div className="col-md-6">
-          <img src={process.env.PUBLIC_URL+'/img/clothes'+props.pat[id].id+'.png'}></img>
+          {/* <img src={process.env.PUBLIC_URL+'/img/clothes'+props.please[id].id+'.png'}></img> */}
           </div>
           <div className="col-md-6">
-            <h4 className="pt-5">{props.pat[id].title}</h4>
-            <p>{props.pat[id].title}</p>
-            <p>{props.pat[id].title}</p>
+            {/* <h4 className="pt-5">{props.please[4].title}</h4> */}
+            {/* <p>{props.please[4].title}</p>
+            <p>{props.please[4].title}</p> */}
             <Link to="/cart"><button
              className="btn btn-danger">주문하기</button> </Link>
           </div>
