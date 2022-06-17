@@ -1,7 +1,8 @@
+import { useState ,useEffect} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import { Routes,Route,Link} from 'react-router-dom';
-import {Navbar ,Nav, Container,NavDropdown,Row,Col} from 'react-bootstrap'
+import {Navbar ,Nav, Container,NavDropdown} from 'react-bootstrap'
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -9,7 +10,7 @@ import Detail from './routes/detail.js';
 import Cart from  './routes/cart.js';
 import data from './data.js';
 
-import { useState } from 'react';
+
 import axios from 'axios';
 
 function App() {
@@ -28,10 +29,10 @@ function App() {
 
 
   let [shoes] = useState(data);
-  
   let [버튼,버튼변경] = useState(0);
   let [ pat,par]=useState(data);
-  let [please,zez]=useState([]);
+  let [modal, setModal] = useState(true);
+  let [buttons,setbuttons] = useState(true);
  
   return (
   <div>
@@ -41,7 +42,7 @@ function App() {
     <Navbar.Toggle aria-controls="basic-navbar-nav" />
     <Navbar.Collapse id="basic-navbar-nav">
       <Nav className="me-auto">
-      <Link to="/"> <Nav.Link href="#home">Home</Nav.Link></Link>
+      <Link to="/"> Home</Link>
         <Nav.Link href="#link">Link</Nav.Link>
         <NavDropdown title="Dropdown" id="basic-nav-dropdown">
           <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
@@ -54,42 +55,56 @@ function App() {
     </Navbar.Collapse>
   </Container>
 </Navbar>
+ <div>
+
+ </div>
 <Routes>
   <Route path="/" element={
     <div>
       <div>
      <Slider {...settings}>
-    <img src="img/backgroundimg.png"  height="400px" />
-    <img src="img/bg.png"  height="400px"/>
-    <img src="img/backgroundimg.png"  height="400px"/>
+    <img src="img/backgroundimg.png"  height="600px" />
+    <img src="img/bg.png"  height="600px"/>
+    <img src="img/backgroundimg.png"   height="600px"/>
     </Slider>
     </div>
-{/* 
-    <div><Product  margin-button="20px"></Product></div> */}
-  <div className="item">
-  { 
-    pat.map((a,i)=>{
-       return  <div className="items"  key={i}> 
-       <Link to={`/detail/${a.id}`}><Card pat={pat[i]} i={i}></Card></Link></div>
-     })
-     
-   } 
-   </div>
-   <div  className="item">
-     { 
-     please.map((a,i)=>{
-       return <div className="items2" key={i}>
-        <Link to={`/detail/${a.id}`}><Card2 please={please[i]} i={i+7}></Card2></Link></div>
-     })
 
+    <div className="popular_item">
+    <img src="img/mainclothes.png"  height="400px" />
+    <img src="img/mainclothes2.png"  height="400px" />
+    <img src="img/mainclothes3.png"  height="400px" />
+    </div>
+
+
+  <div className="item">
+    { 
+     pat.map((a,i)=>{
+       return  <div className="items"  key={i}> 
+       <Link className="text-link" to={`/detail/${a.id}`}><Card pat={pat[i]} i={i}></Card></Link></div>
+     })
+   
    } 
    </div>
- 
-    <button onClick={()=>{
+
+    <button  variant="outline-secondary" onClick={()=>{
       버튼변경(버튼+1)
     }}>더보기</button>
-     <Clicks 버튼={버튼} shoes={shoes} par={par} zez={zez}></Clicks>
-   </div> 
+     <Clicks 버튼={버튼} shoes={shoes} par={par} ></Clicks>
+
+     <div>
+     <div className="coupon">
+      {
+        modal==true?<div>이번주까지 50% 할인<button onClick={()=>{
+          setModal(!modal)
+      }}>삭제</button></div>:null
+      }
+
+      </div>
+      <div>
+      </div>
+      </div>
+
+  </div> 
     }/>
       <Route path="/detail/:id" element={<Detail pat={pat}/> } />
       <Route path="/cart" element={ <Cart/> } />
@@ -98,24 +113,36 @@ function App() {
   )
 }
 function Clicks(props){
+  useEffect(()=>{
+    if(props.버튼==1){
+      axios
+      .all([axios.get('https://codingapple1.github.io/shop/data2.json')
+        ,axios.get('https://codingapple1.github.io/shop/data3.json')])
+     .then(
+      axios.spread((res1,res2)=>{
+        const rest = res1.data;
+        const resr = res2.data;
+        const res = [...props.shoes, ...rest, ...resr];
+        const resp =res.slice(0,6);
+        props.par(resp);
+      })
+    ) 
+  }
+  if(props.버튼==2){
+    axios
+    .all([axios.get('https://codingapple1.github.io/shop/data2.json')
+      ,axios.get('https://codingapple1.github.io/shop/data3.json')])
+   .then(
+    axios.spread((res1,res2)=>{
+      const rest = res1.data;
+      const resr = res2.data;
+      const res = [...props.shoes,...rest, ...resr];
+      props.par(res)
+    })
+  )  
+  }
+  }, [props.버튼])
 
-  if(props.버튼==1){
-    axios.get('https://codingapple1.github.io/shop/data2.json')
-  .then((결과)=>{
-    let copy=[...props.shoes, ...결과.data];
-    props.par(copy);
-    console.log(props.pat)
-  }) 
-
-}if(props.버튼==2){
-  axios.get('https://codingapple1.github.io/shop/data3.json')
-.then((결과)=>{
-  let copy=[...결과.data];
-  props.zez(copy);
- 
-  
-}) 
- }
 if(props.버튼==3){
  return "상품이 더 없습니다"
   }
@@ -130,13 +157,5 @@ function Card(props){
 
   )
 }
-function Card2(props){
-  return(
-  <div>
-  <img src={process.env.PUBLIC_URL+'img/clothes'+props.i+'.png'}></img>
-  <h4>{props.please.title}</h4>
-  <p>{props.please.content}</p>
-    </div>
-  )
-}
+
 export default App;

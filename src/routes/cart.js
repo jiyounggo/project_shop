@@ -3,6 +3,9 @@ import { Button } from 'bootstrap';
 import { useState } from 'react';
 import { Table} from 'react-bootstrap'
 import styled from 'styled-components'
+import { useSelector,useDispatch } from "react-redux"
+import {  addCount,multiply,addItem } from "./../store.js"
+import { Link, useParams } from 'react-router-dom';
 
 let Box = styled.div`
   color : grey;
@@ -11,90 +14,57 @@ let Box = styled.div`
   text-align : center;
   margin:20px;
 `;
-function Cart(){
 
-  let [따봉,따봉변경]=useState(0);
-  let [따봉1, 따봉변경1] = useState(0);
-  let [삭제,삭제변경] = useState(true);
-  let [삭제1,삭제변경1] =useState(true);
+function Cart(props){
+  let [Total, setTotal] = useState(0 );
+  let state = useSelector((state) => { return state } )
+  // let states = 
+  // useSelector((state) => { return state.cart[0].price *state.cart[0].count})
+  // let states1 = useSelector((state) => { return state.cart[1].price *state.cart[1].count})
+  let dispatch = useDispatch ();
+
+  let total=state.cart.reduce((accu,cart)=>
+  accu + (cart.price * cart.count),0)
+  console.log(total)
+ 
+
+  
   return (
  <Box>
+
   <Table striped>
+
   <thead>
     <tr>
-      <th>이미지</th>
+      <th>상품번호</th>
       <th>상품정보</th>
       <th>판매가</th>
       <th>수량</th>
       <th>갯수</th>
-      <th>배송비</th>
-      <th>합계</th>
-      <th>선택</th>
-      <th>삭제</th>
+     
     </tr>
   </thead>
   <tbody>
-    {
-      삭제==true? <tr>
-      <td>1</td>
-      <td>Mark</td>
-      <td>dndkd</td>
-      <td><button onClick={()=>{
-        따봉변경(따봉+1)
-      }}>+</button>
-      <button onClick={()=>{
-        따봉변경(따봉-1)
-      }}>-</button></td>
-      <td>{따봉}
-        </td>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td><input type="checkbox"></input></td>
-      <td><button onClick={()=>{
-          삭제변경(!삭제)
-      }}>X</button></td>
-    </tr>
-    :
-    null
-    }
-   {
-      삭제1==true?
-    <tr>
-      <td>2</td>
-      <td>Jacob</td>
-      <td>Thornton</td>
-      <td><button onClick={()=>{
-        따봉변경1(따봉1+1)
-        
-      }}>+</button>
-      <button onClick={()=>{
-        따봉변경1(따봉1-1)
-      }}>-</button></td>
-      <td>{따봉1}</td>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td><input type="checkbox"></input></td>
-      <td><button onClick={()=>{
-        삭제변경1(!삭제1)
-      }}>X</button></td>
-    </tr>
-    :
-    null
-    }
-    
-    <tr>
-      <td>3</td>
-      <td colSpan={2}>Larry the Bird</td>
-      <td>@twitter</td>
-      <td>1</td>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td><input type="checkbox"></input></td>
-      <td>히히</td>
-    </tr>
-    
+  {
+    state.cart.map((a, i)=>(
+      <tr key={i}>
+        <td>{state.cart[i].id}</td>
+        <td>{state.cart[i].name}</td>
+        <td>{state.cart[i].price * state.cart[i].count}</td>
+        <td>{state.cart[i].count}</td>
+        <td><button onClick={()=>{
+         dispatch(addCount(state.cart[i].id))
+       
+        //  let total =(`${state.cart[i].price * state.cart[i].count}`)
+      
+       
+        }}>+</button></td>
+      </tr>
+     ))
+   }
+ 
+ {total}
 
-    
   </tbody>
 </Table>
 
@@ -102,6 +72,5 @@ function Cart(){
  
   )
   }
-
 
 export default Cart

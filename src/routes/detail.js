@@ -1,23 +1,27 @@
 import { useState ,useEffect} from 'react';
 import { Link, useParams } from 'react-router-dom';
-import {Nav,Card,ListGroup} from 'react-bootstrap'
-
-
-
-
+import {Nav} from 'react-bootstrap'
+import swal from 'sweetalert';
+import { useNavigate } from "react-router-dom";
+import { useSelector,useDispatch } from "react-redux"
+import { addCount, addItem} from "./../store.js"
 
 function Detail(props){
+
+  let state = useSelector((state) => { return state.cart } )
+
   let {id} = useParams();
-  console.log(id);
-  let [modal, setModal] = useState(true);
   let [탭 , 탭변경]=useState(0);
   let [alert, setAlert] = useState(true);
+  const navigate = useNavigate();
+  let dispatch = useDispatch ()
 
   useEffect(()=>{
     setTimeout(()=>{ setAlert(false) }, 2000)
   }, [])
     return (  
         <div className="container">
+          
            {
         alert == true
         ? <div className="alert alert-warning">
@@ -25,32 +29,50 @@ function Detail(props){
           </div>
         : null
       }
-      
-  
         <div className="row">
           <div className="col-md-6">
           <img src={process.env.PUBLIC_URL+'/img/clothes'+props.pat[id].id+'.png'}></img>
           </div>
           <div className="col-md-6">
             <h4 className="pt-5">{props.pat[id].title}</h4>
-            <p>{props.pat[id].title}</p>
-            <p>{props.pat[id].title}</p>
-            <Link to="/cart"><button
-             className="btn btn-danger">주문하기</button> </Link>
-          </div>
-        </div>
-        <div>
-       {
-        modal==true?<div>이번주까지 50% 할인</div>:null
-      }
-      </div>
-      <div>
-      <button onClick={()=>{
-          setModal(!modal)
-      }}>X</button>
-      </div>
+            <p>{props.pat[id].content }</p>
+            <p>{props.pat[id].price}</p>
+            <button onClick={()=>{
+             
+             let dupValue = state.findIndex((a)=>{
+              return a.id === props.pat[id].id
+             }) 
+             console.log(dupValue)
 
-      <Nav variant="tabs"  defaultActiveKey="link0">
+             dupValue === -1
+             ?dispatch(addItem( {
+              id : props.pat[id].id,
+              name : props.pat[id].title,
+              price :props.pat[id].price,
+              count : 1}
+                 ))
+             :dispatch(addCount(props.pat[id].id))
+    swal({
+      title: "장바구니에 잘 담겼어요!",
+      icon: "success",
+      buttons: {
+        showCart: { text: "장바구니 이동", value: "showCart" },
+        cancel: "쇼핑 계속하기",
+      },
+    }).then((value) => {
+      switch(value){
+        case "showCart" :
+          navigate("/cart");
+          break;
+      }
+    })
+     }}
+     className="btn btn-danger">주문하기</button>
+            </div>  
+        </div>
+       
+
+    <Nav variant="tabs"  defaultActiveKey="link0">
     <Nav.Item>
       <Nav.Link eventKey="link0" onClick={()=>{
         탭변경(0)
@@ -107,7 +129,7 @@ function Detail(props){
   {  
         글제목.map(function(a, i){
           return (
-          <div className="list">
+          <div className="list" key={i}>
             <h4>{ 글제목[i] }</h4>
             <button onClick={()=>{ 
               let copy = [...글제목];
